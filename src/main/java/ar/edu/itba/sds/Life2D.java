@@ -43,15 +43,18 @@ public class Life2D {
         final AtomicBoolean gotToEdge = new AtomicBoolean(false);
 
         // as an auxiliary list, to save the next step living cells
-        final List<Point> newList = new ArrayList<>();
+//        final List<Point> newList = new ArrayList<>();
+                final List<Point> newList = Collections.synchronizedList(new ArrayList<>());
 
+
+        printAliveCells(aliveCells, matrixSide, 0, outFileName);
 
         // life game iteration until steps are over or stop criteria is met
         long i = 0;
         while (i < steps) {
 
             // print to the output the living cells
-            printAliveCells(aliveCells, matrixSide, i++, outFileName);
+            //printAliveCells(aliveCells, matrixSide, i++, outFileName);
 
             // stop criteria
             if (aliveCells.size() == 0) break; // all cells dead
@@ -59,7 +62,7 @@ public class Life2D {
             if (gotToEdge.get()) break; // a cell or more got to an edge
 
             // iterate over all possible cells
-            IntStream.range(0, matrixSide * matrixSide).forEach(cell -> {
+            IntStream.range(0, matrixSide * matrixSide).parallel().forEach(cell -> {
                 // get values
                 Point me = new Point(cell % matrixSide, (cell - cell % matrixSide) / matrixSide);
                 int aliveNeighbours = getAliveNeighbours(aliveCells, me);
@@ -77,6 +80,8 @@ public class Life2D {
             aliveCells.addAll(newList);
             newList.clear();
         }
+        printAliveCells(aliveCells, matrixSide, i, outFileName);
+
 
         // end of steps
 
@@ -84,7 +89,7 @@ public class Life2D {
         System.out.printf("Life Game Execution time \t\t ⏱  %g seconds\n", (endTime - startTime) / 1000.0);
         System.out.printf("\nLife Game Finished in %d steps\n", i);
         System.out.print("\nLife Game Finished due to ");
-        if (aliveCells.size() == 0) System.out.print("all dead cells ☠️");
+        if (aliveCells.size() == 0) System.out.print("all dead cells 💀️");
         else if (gotToEdge.get()) System.out.print("a reach on the edge \uD83C\uDFC1");
         else if (steps == i) System.out.print("reach of top steps 🪜");
         else System.out.print("a repeated stat️e \uD83D\uDD01");
@@ -113,7 +118,7 @@ public class Life2D {
                 matrixSide = Integer.parseInt(properties.getProperty("size", "100"));
 
                 // region size to be set out as initial zone has to be par or not according to initial matrix size
-                final int initialMatrixSide = Integer.parseInt(properties.getProperty("initSize", "40"));
+                final int initialMatrixSide = Integer.parseInt(properties.getProperty("initSize", "60"));
 
                 // occupation percentage level of initial zone
                 final int initialOccupationPercentage = Integer.parseInt(properties.getProperty("occupation", "60"));
@@ -189,7 +194,7 @@ public class Life2D {
         // shuffle the list of all possible cells for initialization
         Collections.shuffle(init, new Random(randomSeed));
         // create hash set with the first given percentage of the possible cells for initialization
-        return new HashSet<>(init.subList(0, (initialOccupationPercentage * initialMatrixSide) / 100 ));
+        return new HashSet<>(init.subList(0, (initialOccupationPercentage * initialMatrixSide * initialMatrixSide) / 100));
     }
 
 
@@ -246,7 +251,7 @@ public class Life2D {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName + "-" + time + ".txt"))) {
             writer.write(matrixSide + "\n" + set.size() + "\n");
             for (Point p : set) {
-                writer.write(p.getX() + " " + p.getY() + " " + 0 + "\n");
+                writer.write((int) p.getX() + " " + (int) p.getY() + " " + 0 + "\n");
             }
         } catch (IOException e) { printAndExit(e.getMessage()); }
     }

@@ -9,7 +9,7 @@ To generate executable and run the life simulation
     - steps are the maximum amount of steps performed
     - our is the filepath prefix for the output files
     - the above are the provided default values, same as running `./life.sh`
-4. Run  `./life.sh -Dinit=out/test-2.txt`, where
-    - init is the initializer file, sets the amount of living cells and matrix size
+4. Run  `./life.sh -DinitFile=out/test-2.txt`, where
+    - initFile is the initializer file, sets the amount of living cells and matrix size
     - steps and out can be also added. init replaces size, initSize, occupation and seed
 
