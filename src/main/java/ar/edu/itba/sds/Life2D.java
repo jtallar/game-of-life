@@ -178,11 +178,31 @@ public class Life2D {
         // TODO finish this
         final Properties properties = System.getProperties();
 
+        final String rule = properties.getProperty("rule", "B3/S23");
+
         // filtering condition
-        predicate = (alive, count) -> {
-            if (alive) return count == 2 || count == 3;
-            else return count == 3;
-        };
+        switch (rule) {
+            case "B36/S23":
+                predicate = (alive, count) -> {
+                    if (alive) return count == 2 || count == 3;
+                    else return count == 3 || count == 6;
+                };
+                break;
+
+            case "B2/S3":
+                predicate = (alive, count) -> {
+                    if (alive) return count == 2;
+                    else return count == 3;
+                };
+                break;
+
+            default:
+                predicate = (alive, count) -> {
+                    if (alive) return count == 2 || count == 3;
+                    else return count == 3;
+                };
+        }
+
     }
 
 
