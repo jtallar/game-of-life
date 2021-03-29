@@ -1,3 +1,5 @@
+package ar.edu.itba.sds;
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;

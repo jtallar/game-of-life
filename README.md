@@ -1,4 +1,4 @@
-# ar.itba.edu.sds.Life Simulation
+# Life Simulation
 To generate executable and run the life simulation
 1. Run `./prepare.sh` in root.
 2. Go to output folder `cd target/tp2-simu-1.0`.

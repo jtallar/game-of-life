@@ -1,3 +1,5 @@
+package ar.edu.itba.sds;
+
 import java.awt.*;
 import java.io.*;
 import java.util.*;
@@ -80,11 +82,12 @@ public class Life2D {
 
         endTime = System.currentTimeMillis();
         System.out.printf("Life Game Execution time \t\t ⏱  %g seconds\n", (endTime - startTime) / 1000.0);
-        System.out.print("Life Game Finished due to ");
+        System.out.printf("\nLife Game Finished in %d steps\n", i);
+        System.out.print("\nLife Game Finished due to ");
         if (aliveCells.size() == 0) System.out.print("all dead cells ☠️");
-        else if (gotToEdge.get()) System.out.print("a cell reaching the edge \uD83C\uDFC1");
-        else if (steps == i) System.out.print("number of steps reached 🪜");
-        else System.out.print("reach of a repeated stat️e \uD83D\uDD01");
+        else if (gotToEdge.get()) System.out.print("a reach on the edge \uD83C\uDFC1");
+        else if (steps == i) System.out.print("reach of top steps 🪜");
+        else System.out.print("a repeated stat️e \uD83D\uDD01");
     }
 
 
