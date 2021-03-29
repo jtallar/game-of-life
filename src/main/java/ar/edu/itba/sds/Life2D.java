@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 public class Life2D {
@@ -18,6 +20,7 @@ public class Life2D {
     private static long steps;
     private static String outFileName;
     private static BiPredicate<Boolean, Integer> predicate;
+    private static boolean parallel;
 
     public static void main(String[] args) {
 
@@ -26,7 +29,7 @@ public class Life2D {
         // initializes matrixSide and aliveCells
         initializeMatrixValues();
 
-        // initialize the steps and out file name
+        // initialize the steps, out file name and parallel
         initializeVarious();
 
         // initialize the filter condition for a cell to live or die
@@ -36,6 +39,9 @@ public class Life2D {
         System.out.printf("Life Game Processing time \t\t ⏱  %g seconds\n", (endTime - startTime) / 1000.0);
         startTime = endTime;
 
+
+
+
         // set with the hashes of the alive cells hash set
         final HashSet<Integer> setHashes = new HashSet<>();
 
@@ -43,18 +49,38 @@ public class Life2D {
         final AtomicBoolean gotToEdge = new AtomicBoolean(false);
 
         // as an auxiliary list, to save the next step living cells
-//        final List<Point> newList = new ArrayList<>();
-                final List<Point> newList = Collections.synchronizedList(new ArrayList<>());
+        final List<Point> newList = Collections.synchronizedList(new ArrayList<>());
 
 
-        printAliveCells(aliveCells, matrixSide, 0, outFileName);
+
+
+        // the consumer applied on each cell
+        final IntConsumer consumer = cell -> {
+            // get values
+            Point me = new Point(cell % matrixSide, (cell - cell % matrixSide) / matrixSide);
+            int aliveNeighbours = getAliveNeighbours(aliveCells, me);
+            boolean imAlive = aliveCells.contains(me);
+
+            // if the predicate is met, the new cell is going to live for the next iterations
+            if (predicate.test(imAlive, aliveNeighbours)) {
+                newList.add(me);
+                gotToEdge.set(me.x == 0 || me.y == 0 || me.x == matrixSide - 1 || me.y == matrixSide - 1);
+            }
+        };
+
+        // check if the stream is parallel or not
+        IntStream cellStream = IntStream.range(0, matrixSide * matrixSide);
+        if (parallel) cellStream = cellStream.parallel();
+
+
+
 
         // life game iteration until steps are over or stop criteria is met
         long i = 0;
         while (i < steps) {
 
             // print to the output the living cells
-            //printAliveCells(aliveCells, matrixSide, i++, outFileName);
+            printAliveCells(aliveCells, matrixSide, i++, outFileName);
 
             // stop criteria
             if (aliveCells.size() == 0) break; // all cells dead
@@ -62,28 +88,17 @@ public class Life2D {
             if (gotToEdge.get()) break; // a cell or more got to an edge
 
             // iterate over all possible cells
-            IntStream.range(0, matrixSide * matrixSide).parallel().forEach(cell -> {
-                // get values
-                Point me = new Point(cell % matrixSide, (cell - cell % matrixSide) / matrixSide);
-                int aliveNeighbours = getAliveNeighbours(aliveCells, me);
-                boolean imAlive = aliveCells.contains(me);
-
-                // if the predicate is met, the new cell is going to live for the next iterations
-                if (predicate.test(imAlive, aliveNeighbours)) {
-                    newList.add(me);
-                    gotToEdge.set(me.x == 0 || me.y == 0 || me.x == matrixSide - 1 || me.y == matrixSide - 1);
-                }
-            });
+            cellStream.forEach(consumer);
 
             // save the new cells to the set
             aliveCells.clear();
             aliveCells.addAll(newList);
             newList.clear();
         }
-        printAliveCells(aliveCells, matrixSide, i, outFileName);
-
-
         // end of steps
+
+
+
 
         endTime = System.currentTimeMillis();
         System.out.printf("Life Game Execution time \t\t ⏱  %g seconds\n", (endTime - startTime) / 1000.0);
@@ -148,6 +163,10 @@ public class Life2D {
 
         // filename output prefix with the cells
         outFileName = properties.getProperty("out", "out/test");
+
+        // if runs parallel or not
+        parallel = Boolean.parseBoolean(properties.getProperty("parallel"));
+
     }
 
 
@@ -161,7 +180,7 @@ public class Life2D {
 
         // filtering condition
         predicate = (alive, count) -> {
-            if (alive) return count >= 2;
+            if (alive) return count == 2 || count == 3;
             else return count == 3;
         };
     }
