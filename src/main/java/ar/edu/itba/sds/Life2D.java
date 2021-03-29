@@ -110,10 +110,10 @@ public class Life2D {
 
             try {
                 // initial matrix size
-                matrixSide = Integer.parseInt(properties.getProperty("size", "10"));
+                matrixSide = Integer.parseInt(properties.getProperty("size", "100"));
 
                 // region size to be set out as initial zone has to be par or not according to initial matrix size
-                final int initialMatrixSide = Integer.parseInt(properties.getProperty("initSize", "4"));
+                final int initialMatrixSide = Integer.parseInt(properties.getProperty("initSize", "40"));
 
                 // occupation percentage level of initial zone
                 final int initialOccupationPercentage = Integer.parseInt(properties.getProperty("occupation", "60"));
