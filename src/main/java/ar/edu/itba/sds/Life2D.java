@@ -1,5 +1,3 @@
-package ar.itba.edu.sds;
-
 import java.awt.*;
 import java.io.*;
 import java.util.*;
