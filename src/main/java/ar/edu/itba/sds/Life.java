@@ -28,6 +28,7 @@ public class Life {
     private static String outFileName;
     private static long steps;
     private static boolean parallel;
+    private static boolean center;
     private static BiPredicate<Boolean, Integer> bsPredicate;
     private static Predicate<Point3D> edgePredicate;
     private static List<Point3D> mooreNeighbours;
@@ -140,6 +141,9 @@ public class Life {
     protected static void initializeMatrixValues() {
 
         final Properties properties = System.getProperties();
+
+        // if centers the output
+        center = Boolean.parseBoolean(properties.getProperty("center"));
 
         // if an existing file is provided for the initialization, the rest is not taken into account
         final String existingInit = properties.getProperty("in");
@@ -401,11 +405,13 @@ public class Life {
 
             int size = Integer.parseInt(reader.readLine()); // amount of living cells
             final List<Point3D> init = new ArrayList<>(size); // auxiliary array
+            final int offset = (center) ? (matrixSide - 1) / 2 : 0;
 
             for (int i = 0; i < size; i++) {
                 String line = reader.readLine();
                 if (line == null) throw new IOException();
-                init.add(new Point3D(line.split(" "), dimensions));
+                Point3D p = new Point3D(line.split(" "), dimensions, offset);
+                init.add(p);
             }
 
             // check if its the final line
@@ -428,9 +434,11 @@ public class Life {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName, true))) {
             writer.write("*\n" + set.size() + "\n");
 
+            final int offset = (center) ? -(matrixSide - 1) / 2 : 0;
+
             // write each point
-            if (dimensions == 3) for (Point3D p : set) writer.write(p.getX() + " " + p.getY() + " " + p.getZ() + "\n");
-            else for (Point3D p : set) writer.write(p.getX() + " " + p.getY() + "\n");
+            if (dimensions == 3) for (Point3D p : set) writer.write(p.toString3D(offset) + "\n");
+            else for (Point3D p : set) writer.write(p.toString2D(offset) + "\n");
         } catch (IOException e) { printAndExit(e.getMessage()); }
     }
 

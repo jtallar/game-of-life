@@ -20,10 +20,11 @@ public class Point3D {
         this.z = ((value - module * y - x) / (module * module)) % module;
     }
 
-    public Point3D(final String[] s, final int dimensions) throws NumberFormatException, IndexOutOfBoundsException {
-        this.x = Integer.parseInt(s[0]);
-        this.y = Integer.parseInt(s[1]);
-        this.z = (dimensions == 3) ? Integer.parseInt(s[2]) : 0;
+    public Point3D(final String[] s, final int dimensions, final int offset) throws NumberFormatException, IndexOutOfBoundsException {
+        this.x = Integer.parseInt(s[0]) + offset;
+        this.y = Integer.parseInt(s[1]) + offset;
+        this.z = (dimensions == 3) ? Integer.parseInt(s[2]) + offset : 0;
+        if (this.x < 0 || this.y < 0 || this.z < 0) throw new NumberFormatException("Bad center input file");
     }
 
     public Point3D add(final Point3D p) {
@@ -77,5 +78,21 @@ public class Point3D {
                 ", y=" + y +
                 ", z=" + z +
                 '}';
+    }
+
+    public String toString2D() {
+        return x + " " + y;
+    }
+
+    public String toString3D() {
+        return x + " " + y + " " + z;
+    }
+
+    public String toString2D(final int offset) {
+        return (x + offset) + " " + (y + offset);
+    }
+
+    public String toString3D(final int offset) {
+        return (x + offset) + " " + (y + offset) + " " + (z + offset);
     }
 }
