@@ -361,7 +361,7 @@ public class Life2D {
             writer.write("*\n" + set.size() + "\n");
 
             // write each point
-            for (Point p : set) writer.write((int) p.getX() + " " + (int) p.getY() + " " + 0 + "\n");
+            for (Point p : set) writer.write((int) p.getX() + " " + (int) p.getY() + "\n");
         } catch (IOException e) { printAndExit(e.getMessage()); }
     }
 
