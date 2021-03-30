@@ -6,10 +6,11 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 import java.util.function.IntConsumer;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
+// TODO errors append some context
 public class Life2D {
     private static final int ERROR_STATUS = 1;
 
@@ -79,7 +80,7 @@ public class Life2D {
         while (i < steps) {
 
             // print to the output the living cells
-            printAliveCells(aliveCells, matrixSide, outFileName);
+            printAliveCells(aliveCells, outFileName);
 
             // stop criteria
             if (aliveCells.size() == 0) break; // all cells dead
@@ -108,6 +109,7 @@ public class Life2D {
         else if (gotToEdge.get()) System.out.print("a reach on the edge \uD83C\uDFC1");
         else if (steps == i) System.out.print("reach of top steps 🪜");
         else System.out.print("a repeated stat️e \uD83D\uDD01");
+        System.out.println();
     }
 
 
@@ -187,36 +189,87 @@ public class Life2D {
      */
     protected static void initializeFilterCondition() {
 
-        // TODO maybe make dynamic?
         final Properties properties = System.getProperties();
 
-        final String rule = properties.getProperty("rule", "B3/S23");
+        final String rule = properties.getProperty("rule", "=.2.|.=.3/=.3");
 
-        // filtering condition
-        switch (rule) {
-            case "B36/S23":
-                predicate = (alive, count) -> {
-                    if (alive) return count == 2 || count == 3;
-                    else return count == 3 || count == 6;
-                };
-                break;
+        final String[] survival = rule.split("/")[0].split("\\.");
+        final String[] birth = rule.split("/")[1].split("\\.");
 
-            case "B2/S3":
-                predicate = (alive, count) -> {
-                    if (alive) return count == 2;
-                    else return count == 3;
-                };
-                break;
+        Predicate<Integer> survivalPredicate = generatePredicate(survival);
+        Predicate<Integer> birthPredicate = generatePredicate(birth);
 
-            default:
-                predicate = (alive, count) -> {
-                    if (alive) return count == 2 || count == 3;
-                    else return count == 3;
-                };
-        }
-
+        // generate the used predicate
+        predicate = (alive, count) -> {
+            if (alive) return survivalPredicate.test(count);
+            else return birthPredicate.test(count);
+        };
     }
 
+
+    /**
+     * Creates from a tokenized array the predicate
+     * @param array The tokenized array with the form: compare operator - number - binary operator - compare operator - number ...
+     * @return The functional predicate
+     */
+    protected static Predicate<Integer> generatePredicate(String[] array) {
+        // for the fist, is mandatory to have minimum a simple predicate
+        int i = 0;
+        Predicate<Integer> predicate = generateSimplePredicate(array, i);
+        i += 2;
+
+        // iterate over all array and append predicates
+        while (i < array.length) {
+            predicate = generateComplexPredicate(array, i, predicate);
+            i += 3;
+        }
+
+        return predicate;
+    }
+
+
+    /**
+     * Generates a simple predicate, meaning a compare
+     * @param array The array from which to obtain the operator and number
+     * @param i The index from which to check the array
+     * @return The predicate
+     */
+    protected static Predicate<Integer> generateSimplePredicate(String[] array, int i) {
+        // check for index out of range
+        if (i + 1 >= array.length) printAndExit("Invalid formatted rule 1");
+
+        // generate corresponding predicate
+        try {
+            final int num = Integer.parseInt(array[i + 1]);
+            switch (array[i]) {
+                case ">": return (var) -> var > num;
+                case "<": return (var) -> var < num;
+                case "=": return (var) -> var == num;
+                default: printAndExit("Invalid formatted rule 2");
+            }
+        } catch (NumberFormatException e) { printAndExit(e.getMessage()); }
+
+        return (c) -> false;
+    }
+
+
+    /**
+     * Generates a complex predicate, meaning an or or and of predicates
+     * @param array The array from which to obtain the operator
+     * @param i The index from which to check the array
+     * @param predicate The previous existing predicate to operate over
+     * @return The predicate
+     */
+    protected static Predicate<Integer> generateComplexPredicate(String[] array, int i, Predicate<Integer> predicate) {
+
+        switch (array[i]) {
+            case "&": return predicate.and(generateSimplePredicate(array, i + 1));
+            case "|": return predicate.or(generateSimplePredicate(array, i + 1));
+            default: printAndExit("Invalid formatted rule 3");
+        }
+
+        return (c) -> false;
+    }
 
     /**
      * Initializes de matrix given the params taken
@@ -301,10 +354,9 @@ public class Life2D {
     /**
      * Prints the cells alive
      * @param set The set with the alive cells
-     * @param matrixSide The matrix side size for decomposing the value
      * @param outFileName The filename prefix
      */
-    protected static void printAliveCells(final HashSet<Point> set, final int matrixSide, final String outFileName) {
+    protected static void printAliveCells(final HashSet<Point> set, final String outFileName) {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName, true))) {
             writer.write("*\n" + set.size() + "\n");
 
