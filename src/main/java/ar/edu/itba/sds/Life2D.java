@@ -63,7 +63,7 @@ public class Life2D {
             // if the predicate is met, the new cell is going to live for the next iterations
             if (predicate.test(imAlive, aliveNeighbours)) {
                 newList.add(me);
-                gotToEdge.set(me.x == 0 || me.y == 0 || me.x == matrixSide - 1 || me.y == matrixSide - 1);
+                if (!imAlive) gotToEdge.compareAndSet(true, (me.x == 0 || me.y == 0 || me.x == matrixSide - 1 || me.y == matrixSide - 1));
             }
         };
 
