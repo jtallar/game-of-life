@@ -1,5 +1,7 @@
 package ar.edu.itba.sds.objects;
 
+
+
 public class Point3D {
 
     private int x;
@@ -12,6 +14,34 @@ public class Point3D {
         this.z = z;
     }
 
+    public Point3D(final int value, final int module) {
+        this.x = value % module;
+        this.y = ((value - x) / module) % module;
+        this.z = ((value - module * y - x) / (module * module)) % module;
+    }
+
+    public Point3D(final String[] s, final int dimensions) throws NumberFormatException, IndexOutOfBoundsException {
+        this.x = Integer.parseInt(s[0]);
+        this.y = Integer.parseInt(s[1]);
+        this.z = (dimensions == 3) ? Integer.parseInt(s[2]) : 0;
+    }
+
+    public Point3D add(final Point3D p) {
+        return new Point3D(x + p.x, y + p.y, z + p.z);
+    }
+
+
+    public Point3D move(final int dx, final int dy, final int dz) {
+        this.x += dx;
+        this.y += dy;
+        this.z += dz;
+        return this;
+    }
+
+    public Point3D move(final int dx, final int dy) {
+        return move(dx, dy, 0);
+    }
+
     public int getX() {
         return x;
     }
@@ -22,7 +52,6 @@ public class Point3D {
 
     public int getZ() {
         return z;
-
     }
 
     @Override
@@ -35,9 +64,18 @@ public class Point3D {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 71 * hash + getX();
-        hash = 71 * hash + getY();
-        return 71 * hash + getZ();
+        int hash = 1;
+        hash = 1009 * hash + getX();
+        hash = 1009 * hash + getY();
+        return 1009 * hash + getZ();
+    }
+
+    @Override
+    public String toString() {
+        return "Point3D{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
     }
 }

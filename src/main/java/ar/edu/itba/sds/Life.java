@@ -1,5 +1,7 @@
 package ar.edu.itba.sds;
 
+import ar.edu.itba.sds.objects.Point3D;
+
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -8,30 +10,29 @@ public class Life {
 
     public static void main(String[] args) {
 
-        // read properties
-        Properties properties = System.getProperties();
-
-        // initial matrix size
-        int matrixSide = Integer.parseInt(properties.getProperty("size", "100"));
-
-        // region size to be set out as initial zone has to be par or not according to initial matrix size
-        int initialMatrixSide = Integer.parseInt(properties.getProperty("initSize", "40"));
-
-        // occupation percentage level of initial zone
-        int initialOccupationPercentage = Integer.parseInt(properties.getProperty("occupation", "60"));
-
-        // seed for random generated positions
-        long randomSeed = Long.parseLong(properties.getProperty("seed", String.valueOf(System.nanoTime())));
-
-        // self explanatory
-        boolean isThreeD = Boolean.parseBoolean(properties.getProperty("3D", "false"));
-
-
-        // initialize set
-        final HashSet<Integer> set = initializeMatrix(matrixSide, initialMatrixSide, initialOccupationPercentage, randomSeed, isThreeD);
-
-        printAliveCells(set, matrixSide);
-
+//        // read properties
+//        Properties properties = System.getProperties();
+//
+//        // initial matrix size
+//        int matrixSide = Integer.parseInt(properties.getProperty("size", "100"));
+//
+//        // region size to be set out as initial zone has to be par or not according to initial matrix size
+//        int initialMatrixSide = Integer.parseInt(properties.getProperty("initSize", "40"));
+//
+//        // occupation percentage level of initial zone
+//        int initialOccupationPercentage = Integer.parseInt(properties.getProperty("occupation", "60"));
+//
+//        // seed for random generated positions
+//        long randomSeed = Long.parseLong(properties.getProperty("seed", String.valueOf(System.nanoTime())));
+//
+//        // self explanatory
+//        boolean isThreeD = Boolean.parseBoolean(properties.getProperty("3D", "false"));
+//
+//
+//        // initialize set
+//        final HashSet<Integer> set = initializeMatrix(matrixSide, initialMatrixSide, initialOccupationPercentage, randomSeed, isThreeD);
+//
+//        printAliveCells(set, matrixSide);
 
     }
 
