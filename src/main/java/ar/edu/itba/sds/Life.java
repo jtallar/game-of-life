@@ -142,7 +142,7 @@ public class Life {
         final Properties properties = System.getProperties();
 
         // if an existing file is provided for the initialization, the rest is not taken into account
-        final String existingInit = properties.getProperty("initFile");
+        final String existingInit = properties.getProperty("in");
 
         if (existingInit != null) {
             // initial matrix size, dimension and alive cells
@@ -155,13 +155,13 @@ public class Life {
                 // initial matrix size
                 matrixSide = Integer.parseInt(properties.getProperty("size", DEFAULT_SIDE));
 
-                dimensions = Integer.parseInt(properties.getProperty("dimension", DEFAULT_DIMENSION));
+                dimensions = Integer.parseInt(properties.getProperty("dim", DEFAULT_DIMENSION));
 
                 // region size to be set out as initial zone has to be par or not according to initial matrix size
-                final int initialMatrixSide = Integer.parseInt(properties.getProperty("initSize", DEFAULT_INITIAL_SIDE));
+                final int initialMatrixSide = Integer.parseInt(properties.getProperty("init", DEFAULT_INITIAL_SIDE));
 
                 // occupation percentage level of initial zone
-                final int initialOccupationPercentage = Integer.parseInt(properties.getProperty("occupation", DEFAULT_OCCUPATION));
+                final int initialOccupationPercentage = Integer.parseInt(properties.getProperty("fill", DEFAULT_OCCUPATION));
 
                 // seed for random generated positions
                 final long randomSeed = Long.parseLong(properties.getProperty("seed", String.valueOf(System.nanoTime())));
@@ -186,11 +186,11 @@ public class Life {
         } catch (NumberFormatException e) { printAndExit(e.getMessage()); }
 
         // if runs parallel or not
-        parallel = Boolean.parseBoolean(properties.getProperty("parallel"));
+        parallel = Boolean.parseBoolean(properties.getProperty("pel"));
 
         // if there is already a file append there
-        if (properties.getProperty("initFile") != null) {
-            outFileName = properties.getProperty("initFile");
+        if (properties.getProperty("in") != null) {
+            outFileName = properties.getProperty("in");
             return;
         }
 
@@ -201,9 +201,6 @@ public class Life {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName))) {
             writer.write(dimensions + "\n" + matrixSide + "\n");
         } catch (IOException e) { printAndExit(e.getMessage()); }
-
-
-
     }
 
 
