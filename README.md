@@ -15,6 +15,6 @@ To generate executable and run the life simulation
     - the example above equals to run `./life.sh`
 4. Run  `./life.sh -in=dataIn`, where
     - `in`: initializer file and also output file (must finish in new line)
-    - `steps`, `moore`, `parallel` and `rule` can be added
-    - this method replaces `size`, `initSize`, `occupation`, `seed`, `dimension` and `out`
+    - `steps`, `moore`, `pal` and `rule` can be added
+    - this method replaces `size`, `init`, `fill`, `seed`, `dim` and `out`
 
