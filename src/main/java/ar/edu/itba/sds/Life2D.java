@@ -13,8 +13,6 @@ import java.util.stream.IntStream;
 public class Life2D {
     private static final int ERROR_STATUS = 1;
 
-//        final List<Point> newList = Collections.synchronizedList(new ArrayList<>());
-
     private static int matrixSide;
     private static HashSet<Point> aliveCells;
     private static long steps;
@@ -69,8 +67,9 @@ public class Life2D {
         };
 
         // check if the stream is parallel or not
-        IntStream cellStream = IntStream.range(0, matrixSide * matrixSide);
-        if (parallel) cellStream = cellStream.parallel();
+        final Runnable runnable;
+        if (parallel) runnable = () -> IntStream.range(0, matrixSide * matrixSide).parallel().forEach(consumer);
+        else runnable = () -> IntStream.range(0, matrixSide * matrixSide).forEach(consumer);
 
 
 
@@ -80,7 +79,7 @@ public class Life2D {
         while (i < steps) {
 
             // print to the output the living cells
-            printAliveCells(aliveCells, matrixSide, i++, outFileName);
+            printAliveCells(aliveCells, matrixSide, outFileName);
 
             // stop criteria
             if (aliveCells.size() == 0) break; // all cells dead
@@ -88,12 +87,13 @@ public class Life2D {
             if (gotToEdge.get()) break; // a cell or more got to an edge
 
             // iterate over all possible cells
-            cellStream.forEach(consumer);
+            runnable.run();
 
             // save the new cells to the set
             aliveCells.clear();
             aliveCells.addAll(newList);
             newList.clear();
+            i++;
         }
         // end of steps
 
@@ -160,12 +160,24 @@ public class Life2D {
             steps = Long.parseLong(properties.getProperty("steps", String.valueOf(Long.MAX_VALUE)));
         } catch (NumberFormatException e) { printAndExit(e.getMessage()); }
 
-
-        // filename output prefix with the cells
-        outFileName = properties.getProperty("out", "out/test");
-
         // if runs parallel or not
         parallel = Boolean.parseBoolean(properties.getProperty("parallel"));
+
+        // if there is already a file append there
+        if (properties.getProperty("initFile") != null) {
+            outFileName = properties.getProperty("initFile");
+            return;
+        }
+
+        // filename output prefix with the cells
+        outFileName = properties.getProperty("out", "data");
+
+        // create the file
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName))) {
+            writer.write("2\n" + matrixSide + "\n");
+        } catch (IOException e) { printAndExit(e.getMessage()); }
+
+
 
     }
 
@@ -175,7 +187,7 @@ public class Life2D {
      */
     protected static void initializeFilterCondition() {
 
-        // TODO finish this
+        // TODO maybe make dynamic?
         final Properties properties = System.getProperties();
 
         final String rule = properties.getProperty("rule", "B3/S23");
@@ -245,6 +257,7 @@ public class Life2D {
     protected static int initializeMatrixSideFromFile(final String filename) {
 
         try(BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            if (Integer.parseInt(reader.readLine()) != 2) printAndExit("Should be 2 Dimension file data");
             return Integer.parseInt(reader.readLine());
         } catch (IOException e) { printAndExit(e.getMessage()); }
 
@@ -260,8 +273,11 @@ public class Life2D {
     protected static HashSet<Point> initializeMatrixFromFile(final String filename) {
 
         try(BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            reader.readLine(); // skip first line
-            final int size = Integer.parseInt(reader.readLine()); // amount of living cells
+            reader.readLine(); // skip first line - 2 or 3D
+            reader.readLine(); // skip second line - matrix size
+            reader.readLine(); // skip third line - *
+
+            int size = Integer.parseInt(reader.readLine()); // amount of living cells
             final List<Point> init = new ArrayList<>(size); // auxiliary array
 
             for (int i = 0; i < size; i++) {
@@ -270,6 +286,9 @@ public class Life2D {
                 String[] aux = line.split(" ");
                 init.add(new Point(Integer.parseInt(aux[0]), Integer.parseInt(aux[1])));
             }
+
+            // check if its the final line
+            if (reader.readLine() != null) printAndExit("Bad formatted input file");
 
             return new HashSet<>(init);
 
@@ -283,15 +302,14 @@ public class Life2D {
      * Prints the cells alive
      * @param set The set with the alive cells
      * @param matrixSide The matrix side size for decomposing the value
-     * @param time The instant of time
      * @param outFileName The filename prefix
      */
-    protected static void printAliveCells(final HashSet<Point> set, final int matrixSide, final long time, final String outFileName) {
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName + "-" + time + ".txt"))) {
-            writer.write(matrixSide + "\n" + set.size() + "\n");
-            for (Point p : set) {
-                writer.write((int) p.getX() + " " + (int) p.getY() + " " + 0 + "\n");
-            }
+    protected static void printAliveCells(final HashSet<Point> set, final int matrixSide, final String outFileName) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(outFileName, true))) {
+            writer.write("*\n" + set.size() + "\n");
+
+            // write each point
+            for (Point p : set) writer.write((int) p.getX() + " " + (int) p.getY() + " " + 0 + "\n");
         } catch (IOException e) { printAndExit(e.getMessage()); }
     }
 

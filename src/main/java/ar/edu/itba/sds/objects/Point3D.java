@@ -1,7 +1,5 @@
 package ar.edu.itba.sds.objects;
 
-import java.util.Objects;
-
 public class Point3D {
 
     private int x;
@@ -12,8 +10,6 @@ public class Point3D {
         this.x = x;
         this.y = y;
         this.z = z;
-
-
     }
 
     public int getX() {
