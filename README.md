@@ -25,9 +25,29 @@ All these values are default values, so their parameters will not be provided on
 Center option will be set to true, as well as parallel processing, and dimensions will be set to 2.
 Fill will take different values in the interval (0,100].
 
-### System 1
+### 2D System 1
+Standar Conway's Game of Life ruleset. 
+- Moore neighbourhood of range 1.
+- A cell survives if it has either 2 or 3 living neighbours. 
+- A cell is born if it has exactly 3 living neighbours.
 
-`./target/tp2-simu-1.0/life.sh -Drule="=.2.|.=.3/=.3" -Dsize=101 -Dinit=41 -Dfill=60 -Ddim=2 -Dpel=true -Dcenter=true`
+`./target/tp2-simu-1.0/life.sh -Drule="=.2.|.=.3/=.3" -Dsize=101 -Dinit=41 -Ddim=2 -Dpel=true -Dcenter=true -Dfill=60`
+
+### 2D System 2
+High Life ruleset. 
+- Moore neighbourhood of range 1.
+- A cell survives if it has either 2 or 3 living neighbours. 
+- A cell is born if it has either 3 or 6 living neighbours.
+
+`./target/tp2-simu-1.0/life.sh -Drule="=.2.|.=.3/=.3.|.=.6" -Dsize=101 -Dinit=41 -Ddim=2 -Dpel=true -Dcenter=true -Dfill=60`
+
+### 2D System 3
+Custom ruleset. 
+- Moore neighbourhood of range 1.
+- A cell survives if it has either ?? living neighbours. 
+- A cell is born if it has either ?? living neighbours.
+
+`./target/tp2-simu-1.0/life.sh -Drule="=.2.|.=.3/=.3.|.=.6" -Dsize=101 -Dinit=41 -Ddim=2 -Dpel=true -Dcenter=true -Dfill=60`
 
 # Analysis Tool
 Generate plots and observables given a simulation file as input. If simulation file is named `data`, then:

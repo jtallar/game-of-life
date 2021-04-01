@@ -1,4 +1,5 @@
 import sys
+import matplotlib.pyplot as plt
 
 import objects as obj
 import utils
@@ -40,10 +41,12 @@ for line in sys.stdin:
 step_count = len(live_count)
 
 if plot_boolean:
-    utils.plot_values(range(0, step_count), live_count)           # Plot live_count=f(t)
-    utils.plot_values(range(0, step_count), furthest_distance_l2) # Plot furthest_distance_l2=f(t)
+    plt.rcParams.update({'font.size': 20})
+
+    utils.plot_values(range(0, step_count), 'tiempo', live_count, 'celdas vivas')           # Plot live_count=f(t)
+    utils.plot_values(range(0, step_count), 'tiempo', furthest_distance_l2, 'radio de patrón') # Plot furthest_distance_l2=f(t)
 
     # Hold execution until all plots are closed
     utils.hold_execution()
 
-# What to measure (one val)
+print(f'Total number of generations (including initial one): {step_count}')
