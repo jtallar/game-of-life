@@ -39,6 +39,11 @@ class Cell(object):
             float(array[0]), float(array[1]), float(array[2])
         )
 
+    def coordinate_list(self):
+        if self.z is not None:
+            return [self.x, self.y, self.z]
+        return [self.x, self.y]
+
     # L1 distance from cell to origin
     def distance_to_origin_l1(self):
         z = self.z if self.z is not None else 0
@@ -48,3 +53,9 @@ class Cell(object):
     def distance_to_origin_l2(self):
         z = self.z if self.z is not None else 0
         return math.sqrt(math.pow(self.x, 2) + math.pow(self.y, 2) + math.pow(z, 2))
+    
+    def is_border_cell(self, side):
+        offset = int((side - 1) / 2)
+        if any(v == -offset or v == side - 1 - offset for v in self.coordinate_list()):
+            return True
+        return False

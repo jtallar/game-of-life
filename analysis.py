@@ -19,6 +19,7 @@ live_count_slope = []
 
 furthest_distance_l2 = []
 furthest_distance_l2_slope = []
+end_by_border = False
 
 cur_max_distance = 0
 restart = False
@@ -43,12 +44,20 @@ for line in sys.stdin:
     cur_distance_l2 = cell.distance_to_origin_l2()
     if cur_distance_l2 > furthest_distance_l2[-1]:
         furthest_distance_l2[-1] = cur_distance_l2
+    if cell.is_border_cell(N):
+        end_by_border = True
 # Add last slope for furthest_distance_l2_slope
 furthest_distance_l2_slope.append(utils.regression_slope(furthest_distance_l2))
 
 step_count = len(live_count)
 
+# Figure out how it ended
+if end_by_border: end_print = 'Got to edge'
+elif live_count[-1] == 0: end_print = 'All cells died'
+else: end_print = 'Repetition'
+
 # Print stats
+print(f'Ended by: {end_print}')
 print(f'Total number of generations (including initial one): {step_count}')
 print(f'Final live_count slope: {live_count_slope[-1]}')
 print(f'Final futhest_distance slope: {furthest_distance_l2_slope[-1]}')
