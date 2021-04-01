@@ -18,6 +18,20 @@ To generate executable and run the life simulation
     - `steps`, `moore`, `pal` and `rule` can be added
     - this method replaces `size`, `init`, `fill`, `seed`, `dim` and `out`
 
+## 2D Systems Used
+All 2D systems used will have a 101x101 grid, with particles starting at a 41x41 smaller grid. 
+Seed value will be randomized, steps will not be limited and output will be generated at `data`.
+All these values are default values, so their parameters will not be provided on execution.
+Center option will be set to true, as well as parallel processing, and dimensions will be set to 2.
+Fill will take different values in the interval (0,100].
+
+### System 1
+
+`./target/tp2-simu-1.0/life.sh -Drule="=.2.|.=.3/=.3" -Dsize=101 -Dinit=41 -Dfill=60 -Ddim=2 -Dpel=true -Dcenter=true`
+
+# Analysis Tool
+Generate plots and observables given a simulation file as input. If simulation file is named `data`, then:
+`python3 analysis.py < data`
 
 # Animation Tool
 Generates `simu.xyz` given a simulation file as input. If simulation file is named `data`, then:
