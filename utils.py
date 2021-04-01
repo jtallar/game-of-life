@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
+import numpy as np
 
 # Formatter taken from 
 # https://stackoverflow.com/questions/25750170/show-decimal-places-and-scientific-notation-on-the-axis-of-a-matplotlib-plot
@@ -15,8 +16,8 @@ class MathTextSciFormatter(mticker.Formatter):
         significand = tup[0].rstrip(dec_point)
         sign = tup[1][0].replace(pos_sign, '')
         exponent = tup[1][1:].lstrip('0')
-        if exponent:
-            exponent = '10^{%s%s}' % (sign, exponent)
+        if not exponent: exponent = 0
+        exponent = '10^{%s%s}' % (sign, exponent)
         if significand and exponent:
             s =  r'%s{\times}%s' % (significand, exponent)
         else:
@@ -38,3 +39,23 @@ def plot_values(x_values, x_label, y_values, y_label, precision=2):
 
 def hold_execution():
     plt.show(block=True)
+
+def regression_slope(data):
+    # y = data[i], x = i
+    n = len(data)
+    if n <= 1:
+        return 0
+
+    # Using numpy to multiply arrays
+    x = np.linspace(0, n - 1, num=n)
+    y = np.array(data)
+    
+    sum_x, sum_y = np.sum(x), np.sum(y)
+    sum_xy, sum_xx = np.sum(x * y), np.sum(x * x)
+
+    denominator = n * sum_xx - (sum_x ** 2)
+    if denominator == 0:
+        return 0
+    numerator = n * sum_xy - sum_x * sum_y
+    
+    return numerator / denominator
