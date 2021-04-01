@@ -31,7 +31,9 @@ Fill will take different values in the interval (0,100].
 
 # Analysis Tool
 Generate plots and observables given a simulation file as input. If simulation file is named `data`, then:
-`python3 analysis.py < data`
+`python3 analysis.py [plot] < data`
+
+If plot is not provided, then no graphs are plotted.
 
 # Animation Tool
 Generates `simu.xyz` given a simulation file as input. If simulation file is named `data`, then:
