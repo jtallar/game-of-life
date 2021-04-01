@@ -9,6 +9,7 @@ N = int(stdin.readline()) # Full side length --> NxN or NxNxN
 
 # Each i list element corresponds to i-th time
 live_count = []
+# TODO: Decidir entre distancia L1 y L2
 furthest_distance_l1 = []
 furthest_distance_l2 = []
 cur_max_distance = 0
