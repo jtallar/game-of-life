@@ -24,7 +24,7 @@ class MathTextSciFormatter(mticker.Formatter):
         return "${}$".format(s)
 
 def plot_values(x_values, x_label, y_values, y_label, precision=2):
-    fig, ax = plt.subplots()  # Create a figure containing a single axes.
+    fig, ax = plt.subplots(figsize=(12, 10))  # Create a figure containing a single axes.
     ax.plot(x_values, y_values)  # Plot some data on the axes
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
