@@ -349,7 +349,7 @@ public class Life {
         if (dimensions > 3 || dimensions < 2) printAndExit("Invalid matrix dimension");
         if (matrixSide > 1000 || matrixSide < 1) printAndExit("Invalid matrix side values [0 - 1000]");
         if ((matrixSide - initialMatrixSide) % 2 != 0 || matrixSide < initialMatrixSide) printAndExit("Invalid initial matrix size");
-        if (initialOccupationPercentage <= 0 || initialOccupationPercentage >= 100) printAndExit("Invalid initial occupation percentage");
+        if (initialOccupationPercentage <= 0 || initialOccupationPercentage > 100) printAndExit("Invalid initial occupation percentage");
 
         // auxiliary variables for posterior use
         final int initialMaxElements = (int) Math.pow(initialMatrixSide, dimensions);
