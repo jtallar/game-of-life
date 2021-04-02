@@ -41,6 +41,7 @@ target/
 /out/
 /data
 /dataIn
+data_dir/
 simu.xyz
 
 # Python section
