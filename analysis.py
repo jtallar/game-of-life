@@ -9,4 +9,4 @@ if len(sys.argv) <= 1:
 else:
     plot_boolean = (sys.argv[1] == 'plot')
 
-analyzer.analyze_input(sys.stdin, plot_boolean)
+print(analyzer.analyze_input(sys.stdin, plot_boolean))

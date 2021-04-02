@@ -45,13 +45,11 @@ def analyze_input(source, plot):
     step_count = len(live_count)
 
     # Figure out how it ended
-    if end_by_border: end_print = 'Got to edge 🏁'
-    elif live_count[-1] == 0: end_print = 'All cells died 💀️'
-    else: end_print = 'Repetition 🔁'
+    if end_by_border: ending = obj.Ending.Border
+    elif live_count[-1] == 0: ending = obj.Ending.Dead
+    else: ending = obj.Ending.Repeated
 
-    observables = obj.Observables(end_print, step_count, live_count_slope[-1], furthest_distance_l2_slope[-1])
-    # Print stats
-    print(observables)
+    observables = obj.Observables(ending, step_count, live_count_slope[-1], furthest_distance_l2_slope[-1])
     # Plot values
     if plot:
         utils.init_plotter()
