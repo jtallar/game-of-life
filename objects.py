@@ -91,9 +91,13 @@ class Observables(object):
 
 class FullValue(object):
     def __init__(self, media, std):
-        std_dec = math.ceil(abs(math.log10(std)))
-        self.media = round(media, std_dec)
-        self.std = round(std, std_dec)
+        if std == 0:
+            self.media = media
+            self.std = std
+        else:
+            std_dec = math.ceil(abs(math.log10(std)))
+            self.media = round(media, std_dec)
+            self.std = round(std, std_dec)
     
     def __str__(self):
         return self.__repr__()
@@ -106,14 +110,15 @@ class Summary(object):
         step_list = []
         live_count_slope_list = []
         max_distance_slope_list = []
-        self.ending = observable_list[0].ending
+        self.ending = {}
 
         for obs in observable_list:
             step_list.append(obs.step_count)
             live_count_slope_list.append(obs.live_count_slope)
             max_distance_slope_list.append(obs.max_distance_slope)
-            if self.ending != obs.ending:
-                self.ending = Ending.Multiple
+            if obs.ending not in self.ending:
+                self.ending[obs.ending] = 0
+            self.ending[obs.ending] += 1
 
         self.step = FullValue(sts.mean(step_list), sts.stdev(step_list))
         self.live_count_slope = FullValue(sts.mean(live_count_slope_list), sts.stdev(live_count_slope_list))
