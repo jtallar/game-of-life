@@ -106,7 +106,8 @@ class FullValue(object):
         return "%s±%s" % (self.media, self.std)
 
 class Summary(object):
-    def __init__(self, observable_list):
+    def __init__(self, observable_list, init_percentage):
+        self.init_percentage = init_percentage
         step_list = []
         live_count_slope_list = []
         max_distance_slope_list = []
@@ -128,4 +129,4 @@ class Summary(object):
         return self.__repr__()
     
     def __repr__(self):
-        return "Step(%s)\nLive count m(%s)\nMax distance m(%s)\nEnding(%s)" % (self.step, self.live_count_slope, self.max_distance_slope, self.ending)
+        return "Init Percentage(%s)\nStep(%s)\nLive count m(%s)\nMax distance m(%s)\nEnding(%s)" % (self.init_percentage, self.step, self.live_count_slope, self.max_distance_slope, self.ending)

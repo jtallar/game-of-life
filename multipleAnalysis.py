@@ -13,9 +13,11 @@ else:
     directory = sys.argv[1]
 
 entries = os.listdir(directory)
-obs_list = []
+init_percentage = int(directory.split('/')[-1])
+obs_dict = {}
+obs_dict[init_percentage] = []
 for filename in entries:
     with open(directory + '/' + filename) as file:
-        obs_list.append(analyzer.analyze_input(file, False))
+        obs_dict[init_percentage].append(analyzer.analyze_input(file, False))
 
-print(obj.Summary(obs_list))
+print(obj.Summary(obs_dict[init_percentage], init_percentage))

@@ -1,7 +1,7 @@
 #!/bin/bash
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
     echo "Illegal number of parameters." 
-    echo "Run with ./rule-multianalysis.sh rule_num fill repetitions"
+    echo "Run with ./rule-multianalysis.sh rule_num fill_start fill_step repetitions"
     exit 1
 fi
 
@@ -25,18 +25,25 @@ case $1 in
 esac
 
 ROOT_DIR=data_dir
-if ! [ -d "$ROOT_DIR" ]; then
-    mkdir "$ROOT_DIR"
+if [ -d "$ROOT_DIR" ]; then
+    printf '%s\n' "Removing Directory recursively ($ROOT_DIR)"
+    rm -rf "$ROOT_DIR"
 fi
-SIM_DIR="$ROOT_DIR"/"$2"
-if [ -d "$SIM_DIR" ]; then
-    printf '%s\n' "Removing Directory recursively ($SIM_DIR)"
-    rm -rf "$SIM_DIR"
-fi
-mkdir "$SIM_DIR"
+mkdir "$ROOT_DIR"
 
-for i in $(seq 1 $3)
+FILL="$2"
+while [ "$FILL" -le 100 ]
 do
-    ./target/tp2-simu-1.0/life.sh -Drule="$RULE" -Dsize=101 -Dinit=41 -Ddim="$DIM" -Dpel=true -Dcenter=true -Dfill=$2 -Dout="$SIM_DIR/data$i"
+    SIM_DIR="$ROOT_DIR"/"$FILL"
+    if [ -d "$SIM_DIR" ]; then
+        printf '%s\n' "Removing Directory recursively ($SIM_DIR)"
+        rm -rf "$SIM_DIR"
+    fi
+    mkdir "$SIM_DIR"
+    for i in $(seq 1 $4)
+    do
+        ./target/tp2-simu-1.0/life.sh -Drule="$RULE" -Dsize=101 -Dinit=41 -Ddim="$DIM" -Dpel=true -Dcenter=true -Dfill="$FILL" -Dout="$SIM_DIR/data$i"
+    done
+    python3.8 multipleAnalysis.py "$SIM_DIR"
+    ((FILL = FILL + "$3"))
 done
-python3.8 multipleAnalysis.py "$SIM_DIR"
