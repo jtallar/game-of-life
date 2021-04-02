@@ -129,4 +129,4 @@ class Summary(object):
         return self.__repr__()
     
     def __repr__(self):
-        return "Init Percentage(%s)\nStep(%s)\nLive count m(%s)\nMax distance m(%s)\nEnding(%s)" % (self.init_percentage, self.step, self.live_count_slope, self.max_distance_slope, self.ending)
+        return "Init Percentage(%s)\nStep(%s)\nLive count m(%s)\nMax distance m(%s)\nEnding(%s)\n" % (self.init_percentage, self.step, self.live_count_slope, self.max_distance_slope, self.ending)

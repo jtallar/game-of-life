@@ -40,10 +40,13 @@ do
         rm -rf "$SIM_DIR"
     fi
     mkdir "$SIM_DIR"
+    echo "Running $4 times with fill $FILL..."
     for i in $(seq 1 $4)
     do
         ./target/tp2-simu-1.0/life.sh -Drule="$RULE" -Dsize=101 -Dinit=41 -Ddim="$DIM" -Dpel=true -Dcenter=true -Dfill="$FILL" -Dout="$SIM_DIR/data$i"
     done
-    python3.8 multipleAnalysis.py "$SIM_DIR"
+    echo "-----------------------------------"
     ((FILL = FILL + "$3"))
 done
+
+python3.8 multipleAnalysis.py "$ROOT_DIR"
