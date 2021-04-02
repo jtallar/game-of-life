@@ -52,9 +52,9 @@ furthest_distance_l2_slope.append(utils.regression_slope(furthest_distance_l2))
 step_count = len(live_count)
 
 # Figure out how it ended
-if end_by_border: end_print = 'Got to edge'
-elif live_count[-1] == 0: end_print = 'All cells died'
-else: end_print = 'Repetition'
+if end_by_border: end_print = 'Got to edge 🏁'
+elif live_count[-1] == 0: end_print = 'All cells died 💀️'
+else: end_print = 'Repetition 🔁'
 
 # Print stats
 print(f'Ended by: {end_print}')
