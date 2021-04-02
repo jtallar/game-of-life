@@ -60,7 +60,9 @@ public class Life {
 
 
         // set with the hashes of the alive cells hash set
-        final HashSet<Integer> setHashes = new HashSet<>();
+        // Key --> aliveCells.hashCode()
+        // Value --> List of sets with given hashCode
+        final Map<Integer, List<Set<Point3D>>> mapHashes = new HashMap<>();
 
         // flag for stop criteria, true if a live cell reaches the edges
         final AtomicBoolean gotToEdge = new AtomicBoolean(false);
@@ -106,7 +108,7 @@ public class Life {
 
             // stop criteria
             if (aliveCells.size() == 0) break; // all cells dead
-            if (!setHashes.add(aliveCells.hashCode())) break; // repeated state
+            if (!addToHashes(mapHashes, aliveCells)) break; // repeated state
             if (gotToEdge.get()) break; // a cell or more got to an edge
 
             // iterate over all possible cells
@@ -134,6 +136,36 @@ public class Life {
         System.out.println("\n");
     }
 
+    /**
+     * @param map map instance with previous states
+     * @param cells current alive cells
+     * @return true if cells added to map. false otherwise.
+     */
+    protected static boolean addToHashes(Map<Integer, List<Set<Point3D>>> map, Set<Point3D> cells) {
+        int hashCode = cells.hashCode();
+        final List<Set<Point3D>> list;
+        // If map does not have hashCode as key, no repetition
+        if (map.containsKey(hashCode)) {
+            // Iterate over known lists to check for repetition
+            list = map.get(hashCode);
+            for (Set<Point3D> set : list) {
+                boolean contains = true;
+                for (Point3D point : cells) {
+                    if (!set.contains(point)) {
+                        contains = false;
+                        break;
+                    }
+                }
+                // Found repeated
+                if (contains) return false;
+            }
+        } else list = new ArrayList<>();
+
+        // No repeated set found
+        list.add(new HashSet<>(cells));
+        map.put(hashCode, list);
+        return true;
+    }
 
     /**
      * Initializes the matrix side value and the set of alive cells
