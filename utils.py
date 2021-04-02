@@ -24,6 +24,9 @@ class MathTextSciFormatter(mticker.Formatter):
             s =  r'%s%s' % (significand, exponent)
         return "${}$".format(s)
 
+def init_plotter():
+    plt.rcParams.update({'font.size': 20})
+
 def plot_values(x_values, x_label, y_values, y_label, precision=2):
     fig, ax = plt.subplots(figsize=(12, 10))  # Create a figure containing a single axes.
     ax.plot(x_values, y_values)  # Plot some data on the axes

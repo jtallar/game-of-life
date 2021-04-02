@@ -1,5 +1,4 @@
 import sys
-import matplotlib.pyplot as plt
 
 import objects as obj
 import utils
@@ -62,7 +61,7 @@ def analyze_input(source, plot):
     print(observables)
     # Plot values
     if plot:
-        plt.rcParams.update({'font.size': 20})
+        utils.init_plotter()
 
         utils.plot_values(range(0, step_count), 'tiempo', live_count, 'celdas vivas')               # Plot live_count=f(t)
         utils.plot_values(range(0, step_count), 'tiempo', live_count_slope, 'velocidad celdas vivas')  # Plot live_count_slope=f(t)
