@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: Cambiar para que ejecute 1 sola vez con plot, unificarlos todos
 if [ "$#" -ne 2 ]; then
     echo "Illegal number of parameters. Run with ./rule1.sh fill repetitions"
     exit 1
