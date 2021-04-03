@@ -54,6 +54,9 @@ def analyze_input(source, plot):
     # Add last slope for minimum_distance_l2_slope if not all dead
     if live_count[-1] != 0:
         minimum_distance_l2_slope.append(utils.regression_slope(minimum_distance_l2))
+    else:
+        minimum_distance_l2.append(0)
+        minimum_distance_l2_slope.append(0)
 
     step_count = len(live_count)
 
