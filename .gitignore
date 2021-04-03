@@ -43,6 +43,7 @@ target/
 /dataIn
 data_dir/
 simu.xyz
+pics_*/
 
 # Python section
 # Byte-compiled / optimized / DLL files

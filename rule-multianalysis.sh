@@ -49,4 +49,5 @@ do
     ((FILL = FILL + "$3"))
 done
 
-python3.8 multipleAnalysis.py "$ROOT_DIR"
+PICS_DIR="pics_rule$1"
+python3.8 multipleAnalysis.py "$ROOT_DIR" "$PICS_DIR"
