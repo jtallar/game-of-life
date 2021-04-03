@@ -73,3 +73,5 @@ utils.plot_error_bars(keys, 'input (%)', gen_changes_slope, 'gen changes slope',
 if not save_dir:
     # Hold execution until all plots are closed
     utils.hold_execution()
+else:
+    print(f'Saved plots in {save_dir}/')
