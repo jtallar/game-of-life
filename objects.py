@@ -92,12 +92,11 @@ class Observables(object):
 class FullValue(object):
     def __init__(self, media, std):
         if std == 0:
-            self.media = media
-            self.std = std
+            self.dec_count = 3
         else:
-            std_dec = math.ceil(abs(math.log10(std)))
-            self.media = round(media, std_dec)
-            self.std = round(std, std_dec)
+            self.dec_count = math.ceil(abs(math.log10(std)))
+        self.media = round(media, self.dec_count)
+        self.std = round(std, self.dec_count)
     
     def __str__(self):
         return self.__repr__()
