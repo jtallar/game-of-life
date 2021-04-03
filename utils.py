@@ -78,3 +78,19 @@ def regression_slope(data):
     numerator = n * sum_xy - sum_x * sum_y
     
     return numerator / denominator
+
+def check_changes(set_1, set_2):
+    if len(set_1) < len(set_2):
+        small_set = set_1
+        big_set = set_2
+    else:
+        small_set = set_2
+        big_set = set_1
+
+    gen_changes = 0
+    for cell in small_set:
+        if cell not in big_set:
+            gen_changes += 1
+    gen_changes += abs(len(set_1) - len(set_2))
+
+    return gen_changes

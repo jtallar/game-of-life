@@ -49,5 +49,9 @@ min_distance_slope = [x.min_distance_slope.media for x in sum_values]
 min_distance_slope_err = [x.min_distance_slope.std for x in sum_values]
 utils.plot_error_bars(keys, 'input (%)', min_distance_slope, 'min distance slope', min_distance_slope_err, sum_values[0].min_distance_slope.dec_count)
 
+gen_changes_slope = [x.gen_changes_slope.media for x in sum_values]
+gen_changes_slope_err = [x.gen_changes_slope.std for x in sum_values]
+utils.plot_error_bars(keys, 'input (%)', gen_changes_slope, 'gen changes slope', gen_changes_slope_err, sum_values[0].gen_changes_slope.dec_count)
+
 # Hold execution until all plots are closed
 utils.hold_execution()
