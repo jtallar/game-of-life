@@ -90,8 +90,8 @@ def analyze_input(source, plot):
 
         utils.plot_values(range(0, step_count), 'tiempo', live_count, 'celdas vivas')               # Plot live_count=f(t)
         utils.plot_values(range(0, step_count), 'tiempo', live_count_slope, 'velocidad celdas vivas')  # Plot live_count_slope=f(t)
-        utils.plot_values(range(0, step_count), 'tiempo', furthest_distance_l2, 'radio de patrón')  # Plot furthest_distance_l2=f(t)
-        utils.plot_values(range(0, step_count), 'tiempo', furthest_distance_l2_slope, 'velocidad radio de patrón')  # Plot furthest_distance_l2_slope=f(t)
+        utils.plot_values(range(0, step_count), 'tiempo', furthest_distance_l2, 'radio externo de patrón')  # Plot furthest_distance_l2=f(t)
+        utils.plot_values(range(0, step_count), 'tiempo', furthest_distance_l2_slope, 'velocidad radio externo de patrón')  # Plot furthest_distance_l2_slope=f(t)
         utils.plot_values(range(0, step_count), 'tiempo', minimum_distance_l2, 'radio interno patrón')  # Plot minimum_distance_l2=f(t)
         utils.plot_values(range(0, step_count), 'tiempo', minimum_distance_l2_slope, 'velocidad radio interno patrón')  # Plot minimum_distance_l2_slope=f(t)
         utils.plot_values(range(0, step_count), 'tiempo', generation_changes, 'cambios interstep')  # Plot generation_changes=f(t)
