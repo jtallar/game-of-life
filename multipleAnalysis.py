@@ -70,8 +70,8 @@ gen_changes_slope_err = [x.gen_changes_slope.std for x in sum_values]
 save_name = save_dir + '/gen_changes_slope.png' if save_dir else None
 utils.plot_error_bars(keys, 'input (%)', gen_changes_slope, 'gen changes slope', gen_changes_slope_err, sum_values[0].gen_changes_slope.dec_count, save_name=save_name)
 
-if not save_dir:
-    # Hold execution until all plots are closed
-    utils.hold_execution()
-else:
+if save_dir:
     print(f'Saved plots in {save_dir}/')
+
+# Hold execution until all plots are closed
+utils.hold_execution()    
