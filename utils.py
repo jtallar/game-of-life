@@ -41,16 +41,19 @@ def plot_values(x_values, x_label, y_values, y_label, precision=2):
     plt.tight_layout()
     plt.show(block=False)
 
-def plot_error_bars(x_values, x_label, y_values, y_label, y_error, x_prec=2, y_prec=2, y_min=None, y_max=None, save_name=None):
+def plot_error_bars(x_values, x_label, y_values, y_label, y_error, x_prec=2, y_prec=2, y_min=None, y_max=None, log=False, save_name=None):
     fig, ax = plt.subplots(figsize=(12, 10))  # Create a figure containing a single axes.
-    (_, caps, _) = plt.errorbar(x_values, y_values, yerr=y_error, markersize=8, capsize=20, elinewidth=0.75)  # Plot some data on the axes
+    (_, caps, _) = plt.errorbar(x_values, y_values, yerr=y_error, markersize=6, capsize=20, elinewidth=0.75, linestyle='-',  marker='o')  # Plot some data on the axes
     for cap in caps:
         cap.set_markeredgewidth(1)
 
     ax.set_ylim([y_min, y_max])
+    if log:
+        ax.set_yscale('symlog', linthresh=1e-3)
+    else:
+        ax.ticklabel_format(scilimits=(0,0))
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
-    ax.ticklabel_format(scilimits=(0,0))
 
     ax.xaxis.set_major_formatter(MathTextSciFormatter(f'%1.{x_prec}e'))
     ax.yaxis.set_major_formatter(MathTextSciFormatter(f'%1.{y_prec}e'))
