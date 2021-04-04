@@ -7,17 +7,17 @@ fi
 
 case $1 in
   1)
-    RULE="=.2.|.=.3/=.3"; DIM=2;;
+    RULE="=.2.|.=.3/=.3"; DIM=2; MOORE=1;;
   2)
-    RULE="=.2.|.=.3/=.3.|.=.6"; DIM=2;;
+    RULE=">.8.&.<.11/>.0.&.<.5"; DIM=2; MOORE=2;;
   3)
-    RULE="<.3/=.3"; DIM=2;;
+    RULE="<.3/=.3"; DIM=2; MOORE=1;;
   4)
-    RULE="=.2.|.=.3/=.3"; DIM=3;;
+    RULE="=.2.|.=.3/=.3"; DIM=3; MOORE=1;;
   5)
-    RULE=">.4.&.<.8/=.6"; DIM=3;;
+    RULE=">.4.&.<.8/=.6"; DIM=3; MOORE=1;;
   6)
-    RULE=">.3.&.<.6/=.5"; DIM=3;;
+    RULE=">.5.&.<.11/=.7.|.=.8"; DIM=3; MOORE=1;;
   *)
     echo "Invalid rule number, must be between 1 and 6."
     exit 1
@@ -43,7 +43,7 @@ do
     echo "Running $4 times with fill $FILL..."
     for i in $(seq 1 $4)
     do
-        ./target/tp2-simu-1.0/life.sh -Drule="$RULE" -Dsize=101 -Dinit=41 -Ddim="$DIM" -Dpel=true -Dcenter=true -Dfill="$FILL" -Dout="$SIM_DIR/data$i"
+        ./target/tp2-simu-1.0/life.sh -Drule="$RULE" -Dsize=101 -Dinit=41 -Ddim="$DIM" -Dmoore="$MOORE" -Dpel=true -Dcenter=true -Dfill="$FILL" -Dout="$SIM_DIR/data$i"
     done
     echo "-----------------------------------"
     ((FILL = FILL + "$3"))
