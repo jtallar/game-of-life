@@ -54,6 +54,7 @@ def plot_error_bars(x_values, x_label, y_values, y_label, y_error, precision=2, 
     ax.yaxis.set_major_formatter(MathTextSciFormatter(f'%1.{precision}e'))
 
     plt.grid()
+    plt.tight_layout()
     if save_name:
         plt.savefig(save_name)
     else:
