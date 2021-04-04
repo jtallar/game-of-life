@@ -38,6 +38,7 @@ def plot_values(x_values, x_label, y_values, y_label, precision=2):
     ax.yaxis.set_major_formatter(MathTextSciFormatter(f'%1.{precision}e'))
 
     plt.grid()
+    plt.tight_layout()
     plt.show(block=False)
 
 def plot_error_bars(x_values, x_label, y_values, y_label, y_error, x_prec=2, y_prec=2, save_name=None):
