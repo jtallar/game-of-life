@@ -40,7 +40,7 @@ def plot_values(x_values, x_label, y_values, y_label, precision=2):
     plt.grid()
     plt.show(block=False)
 
-def plot_error_bars(x_values, x_label, y_values, y_label, y_error, precision=2, save_name=None):
+def plot_error_bars(x_values, x_label, y_values, y_label, y_error, x_prec=2, y_prec=2, save_name=None):
     fig, ax = plt.subplots(figsize=(12, 10))  # Create a figure containing a single axes.
     (_, caps, _) = plt.errorbar(x_values, y_values, yerr=y_error, markersize=8, capsize=20, elinewidth=0.75)  # Plot some data on the axes
     for cap in caps:
@@ -50,8 +50,8 @@ def plot_error_bars(x_values, x_label, y_values, y_label, y_error, precision=2, 
     ax.set_ylabel(y_label)
     ax.ticklabel_format(scilimits=(0,0))
 
-    ax.xaxis.set_major_formatter(MathTextSciFormatter(f'%1.{precision}e'))
-    ax.yaxis.set_major_formatter(MathTextSciFormatter(f'%1.{precision}e'))
+    ax.xaxis.set_major_formatter(MathTextSciFormatter(f'%1.{x_prec}e'))
+    ax.yaxis.set_major_formatter(MathTextSciFormatter(f'%1.{y_prec}e'))
 
     plt.grid()
     plt.tight_layout()
