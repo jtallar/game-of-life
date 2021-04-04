@@ -24,7 +24,7 @@ case $1 in
     ;;
 esac
 
-ROOT_DIR=data_dir
+ROOT_DIR="data_dir_$1"
 if [ -d "$ROOT_DIR" ]; then
     printf '%s\n' "Removing Directory recursively ($ROOT_DIR)"
     rm -rf "$ROOT_DIR"

@@ -41,7 +41,7 @@ target/
 /out/
 /data
 /dataIn
-data_dir/
+data_dir*/
 simu.xyz
 pics_*/
 
