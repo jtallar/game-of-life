@@ -50,4 +50,6 @@ do
 done
 
 PICS_DIR="pics_rule$1"
-python3.8 multipleAnalysis.py "$ROOT_DIR" "$PICS_DIR" > "$PICS_DIR/out.txt"
+OUT_FILE="out$1.txt"
+python3.8 multipleAnalysis.py "$ROOT_DIR" "$PICS_DIR" > "$OUT_FILE"
+mv "$OUT_FILE" "$PICS_DIR"
