@@ -89,13 +89,9 @@ If plot is not provided, then no graphs are plotted.
 
 All plots have time as independant variable. Plots shown are:
 - Live cells count
-- Rate of change of live cells count
 - Pattern outer radius
-- Rate of change of pattern outer radius
 - Pattern inner radius
-- Rate of change of pattern inner radius
 - Number of changes between t and t-1
-- Rate of change of the number of changes between t and t-1
 
 ### rule-analysis.sh
 This script can be used to run any of the rules specified before given a rule number (1-6) and a fill value.
@@ -120,7 +116,7 @@ All plots have fill percentage as independant variable. Plots shown are:
 This script can be used to run any of the rules specified before multiple times, given a rule number (1-6), a starting fill value, a step to increase fill value each iteration and the number of repetitions to run for each fill percentage in range.
 `./rule-multianalysis.sh rule_num fill_start fill_step repetitions`
 
-The script runs the simulation for each available fill percentage from `fill_start` to the highest `fill_start + K * fill_step` that is lower or equal than 100. Then, it runs `multipleAnalysis.py` with the output data directory.
+The script runs the simulation for each available fill percentage from `fill_start` to the highest `fill_start + K * fill_step` that is lower or equal than 100. Then, it runs `multipleAnalysis.py` with the output data directory. The plots can be found at directory `pics_ruleN`, where N is the rule number provided. Values corresponding to each plot can also be found at file `pics_ruleN/outN.txt`, being N the rule number both times.
 
 # Animation Tool
 Generates `simu.xyz` given a simulation file as input. If simulation file is named `data`, then:
